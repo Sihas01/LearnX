@@ -4,9 +4,57 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import logo from '../../../public/logo.png';
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
+    const [studentId, setStudentId] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!studentId || !password) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please fill in all fields',
+                confirmButtonColor: '#8B1D2D'
+            });
+            return;
+        }
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ studentId, password }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: 'Welcome back!',
+                    confirmButtonColor: '#8B1D2D'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: data.detail || "Login failed",
+                    confirmButtonColor: '#8B1D2D'
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Could not connect to the server',
+                confirmButtonColor: '#8B1D2D'
+            });
+        }
+    };
 
     return (
         <main className="flex min-h-screen font-inter">
@@ -14,12 +62,14 @@ export default function LoginPage() {
                 <div className="flex flex-col justify-center flex-grow max-w-md mx-auto w-full">
                     <h1 className="mb-6 sm:mb-10 text-[32px] sm:text-[42px] font-bold tracking-tight text-[#1a1a1a]">Sign in</h1>
 
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label className="mb-2 block text-sm font-medium text-gray-500">Student ID</label>
                             <input
                                 type="text"
                                 placeholder="RET12234"
+                                value={studentId}
+                                onChange={(e) => setStudentId(e.target.value)}
                                 className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                             />
                         </div>
@@ -30,6 +80,8 @@ export default function LoginPage() {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="************"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                                 />
                                 <button
