@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import logo from '../../../public/logo.png';
+import { useState } from "react";
 
 export default function RegisterPage() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     return (
         <main className="flex min-h-screen font-inter">
             <div className="hidden lg:block lg:w-1/2 bg-[#FBCFE8]">
@@ -62,12 +68,16 @@ export default function RegisterPage() {
                             <label className="mb-2 block text-sm font-medium text-gray-500">Password</label>
                             <div className="relative">
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     placeholder="************"
                                     className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                                 />
-                                <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                    <Eye className="h-5 w-5" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                 </button>
                             </div>
                         </div>
@@ -76,12 +86,16 @@ export default function RegisterPage() {
                             <label className="mb-2 block text-sm font-medium text-gray-500">Confirm Password</label>
                             <div className="relative">
                                 <input
-                                    type="password"
+                                    type={showConfirmPassword ? "text" : "password"}
                                     placeholder="************"
                                     className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                                 />
-                                <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                    <Eye className="h-5 w-5" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                 </button>
                             </div>
                         </div>
