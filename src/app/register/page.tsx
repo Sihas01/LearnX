@@ -21,11 +21,30 @@ export default function RegisterPage() {
                     <h1 className="mb-6 sm:mb-10 text-[32px] sm:text-[42px] font-bold tracking-tight text-[#1a1a1a]">Create Account</h1>
 
                     <form className="space-y-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-gray-500">First Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="John"
+                                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
+                                />
+                            </div>
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-gray-500">Last Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Doe"
+                                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
+                                />
+                            </div>
+                        </div>
+
                         <div>
-                            <label className="mb-2 block text-sm font-medium text-gray-500">First Name</label>
+                            <label className="mb-2 block text-sm font-medium text-gray-500">Username (Email)</label>
                             <input
-                                type="text"
-                                placeholder="John"
+                                type="email"
+                                placeholder="john.doe@example.com"
                                 className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                             />
                         </div>
