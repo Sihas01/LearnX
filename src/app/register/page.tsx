@@ -233,7 +233,7 @@ export default function RegisterPage() {
 
                         <button
                             type="submit"
-                            className="mt-6 w-full rounded-2xl bg-[#8B1D2D] py-4 text-lg font-semibold text-white transition-all hover:bg-[#a62337] active:scale-[0.98] shadow-lg shadow-[#8B1D2D]/10"
+                            className="mt-6 w-full rounded-2xl bg-[#8B1D2D] py-4 text-lg font-semibold text-white transition-all hover:bg-[#a62337] active:scale-[0.98] shadow-lg shadow-[#8B1D2D]/10 cursor-pointer"
                         >
                             Create Account
                         </button>

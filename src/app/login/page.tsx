@@ -107,7 +107,7 @@ export default function LoginPage() {
 
                         <button
                             type="submit"
-                            className="mt-4 w-full rounded-2xl bg-[#8B1D2D] py-4 text-lg font-semibold text-white transition-all hover:bg-[#a62337] active:scale-[0.98] shadow-lg shadow-[#8B1D2D]/10"
+                            className="mt-4 w-full rounded-2xl bg-[#8B1D2D] py-4 text-lg font-semibold text-white transition-all hover:bg-[#a62337] active:scale-[0.98] shadow-lg shadow-[#8B1D2D]/10 cursor-pointer"
                         >
                             Sign in
                         </button>
@@ -126,9 +126,9 @@ export default function LoginPage() {
                 </div>
             </div>
 
-            <div className="hidden lg:block lg:w-1/2 bg-[#FBCFE8]">
+            <div className="hidden lg:block lg:w-1/2 bg-[#FFFFFF]">
                 <div className="h-full w-full" style={{
-                    backgroundImage: "url('/Hero_image_new_2.jpg')",
+                    backgroundImage: "url('/sigin.png')",
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'left',
