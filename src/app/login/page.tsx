@@ -5,8 +5,10 @@ import { Eye, EyeOff } from "lucide-react";
 import logo from '../../../public/logo.png';
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [studentId, setStudentId] = useState("");
     const [password, setPassword] = useState("");
@@ -38,6 +40,9 @@ export default function LoginPage() {
                     text: 'Welcome back!',
                     confirmButtonColor: '#8B1D2D'
                 });
+            } else if (response.status === 403 && data.detail.message === "Email not verified") {
+                const email = data.detail.email;
+                router.push(`/verify-now?email=${encodeURIComponent(email)}`);
             } else {
                 Swal.fire({
                     icon: 'error',

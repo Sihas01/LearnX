@@ -5,8 +5,10 @@ import { Eye, EyeOff } from "lucide-react";
 import logo from '../../../public/logo.png';
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [firstName, setFirstName] = useState("");
@@ -87,8 +89,10 @@ export default function RegisterPage() {
                 Swal.fire({
                     icon: 'success',
                     title: 'Registration Successful',
-                    text: 'You can now sign in!',
+                    text: 'A verification link has been sent to your email. Please verify your account before signing in.',
                     confirmButtonColor: '#8B1D2D'
+                }).then(() => {
+                    router.push("/login");
                 });
             } else {
                 Swal.fire({
