@@ -198,9 +198,9 @@ export default function ResetPasswordPage() {
                 </div>
             </div>
 
-            <div className="hidden lg:block lg:w-1/2 bg-[#FBCFE8]">
+            <div className="hidden lg:block lg:w-1/2 bg-white">
                 <div className="h-full w-full" style={{
-                    backgroundImage: "url('/Hero_image_new_2.jpg')",
+                    backgroundImage: "url('/Hero_image_2.png')",
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'left',
