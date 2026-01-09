@@ -128,7 +128,7 @@ export default function LoginPage() {
 
             <div className="hidden lg:block lg:w-1/2 bg-[#FFFFFF]">
                 <div className="h-full w-full" style={{
-                    backgroundImage: "url('/sigin.png')",
+                    backgroundImage: "url('/Hero_image_2.png')",
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'left',

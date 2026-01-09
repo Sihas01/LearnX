@@ -113,8 +113,8 @@ export default function RegisterPage() {
     };
 
     return (
-        <main className="flex min-h-screen font-inter">
-            <div className="hidden lg:block lg:w-1/2 bg-[#FBCFE8]">
+        <main className="flex min-h-screen lg:h-screen lg:overflow-hidden font-inter">
+            <div className="hidden lg:block lg:w-1/2">
                 <div className="h-full w-full" style={{
                     backgroundImage: "url('/Hero_image_new_3.jpg')",
                     backgroundRepeat: 'no-repeat',
@@ -125,7 +125,7 @@ export default function RegisterPage() {
                 </div>
             </div>
 
-            <div className="flex w-full flex-col justify-between bg-white px-6 py-12 sm:px-12 sm:py-16 lg:w-1/2 xl:px-24">
+            <div className="flex w-full flex-col justify-between bg-white px-6 py-12 sm:px-12 sm:py-16 lg:w-1/2 lg:h-full lg:overflow-y-auto xl:px-24">
                 <div className="flex flex-col justify-center flex-grow max-w-md mx-auto w-full">
                     <h1 className="mb-6 sm:mb-10 text-[32px] sm:text-[42px] font-bold tracking-tight text-[#1a1a1a]">Create Account</h1>
 
