@@ -21,6 +21,19 @@ export default function ForgotPasswordPage() {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@(gmail\.com|wpu\.ac\.pg)$/;
+
+        if (!emailRegex.test(email)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please enter a valid email address (gmail.com or wpu.ac.pg only)',
+                confirmButtonColor: '#8B1D2D'
+            });
+            return;
+        }
+
+
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/forgot-password`, {
                 method: "POST",
@@ -70,6 +83,9 @@ export default function ForgotPasswordPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                             />
+                            <small className="text-muted text-gray-400">
+                                Allowed domains: gmail.com, wpu.ac.pg
+                            </small>
                         </div>
 
                         <button

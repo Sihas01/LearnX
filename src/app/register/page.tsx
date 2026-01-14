@@ -6,8 +6,10 @@ import logo from '../../../public/logo.png';
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import { Mail } from "lucide-react"; // Import a Google-like icon if needed or just use text
 
-export default function RegisterPage() {
+const RegisterContent = () => {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -47,16 +49,18 @@ export default function RegisterPage() {
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[^\s@]+@(gmail\.com|wpu\.ac\.pg)$/;
+
         if (!emailRegex.test(email)) {
             Swal.fire({
                 icon: 'error',
                 title: 'Validation Error',
-                text: 'Please enter a valid email address',
+                text: 'Please enter a valid email address (gmail.com or wpu.ac.pg only)',
                 confirmButtonColor: '#8B1D2D'
             });
             return;
         }
+
 
         if (password !== confirmPassword) {
             Swal.fire({
@@ -112,6 +116,91 @@ export default function RegisterPage() {
         }
     };
 
+    const handleGoogleLoginSuccess = async (tokenResponse: any, collectedStudentId: string) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/google-login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    token: tokenResponse.access_token,
+                    studentId: collectedStudentId
+                }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                if (data.is_new_user) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Register successfully',
+                        text: `Welcome, ${data.user.firstName}! Your account has been created successfully.`,
+                        confirmButtonColor: '#8B1D2D'
+                    }).then(() => {
+                        router.push("/login");
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful',
+                        text: `Welcome back, ${data.user.firstName}!`,
+                        confirmButtonColor: '#8B1D2D'
+                    }).then(() => {
+                        router.push("/login");
+                    });
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Google Registration Failed',
+                    text: data.detail || "Google registration failed",
+                    confirmButtonColor: '#8B1D2D'
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Could not connect to the server',
+                confirmButtonColor: '#8B1D2D'
+            });
+        }
+    };
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: (tokenResponse) => {
+            const sid = sessionStorage.getItem('tempStudentId') || "";
+            handleGoogleLoginSuccess(tokenResponse, sid);
+        },
+        onError: () => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Google Registration Error',
+                text: 'An error occurred during Google authentication',
+                confirmButtonColor: '#8B1D2D'
+            });
+        }
+    });
+
+    const handleGoogleRegisterClick = async () => {
+        const { value: sid } = await Swal.fire({
+            title: 'Enter Student ID',
+            input: 'text',
+            inputLabel: 'Student ID',
+            inputPlaceholder: 'e.g. RET12234',
+            showCancelButton: true,
+            confirmButtonColor: '#8B1D2D',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You need to write something!'
+                }
+            }
+        });
+
+        if (sid) {
+            sessionStorage.setItem('tempStudentId', sid);
+            googleLogin();
+        }
+    };
+
     return (
         <main className="flex min-h-screen lg:h-screen lg:overflow-hidden font-inter">
             <div className="hidden lg:block lg:w-1/2">
@@ -162,6 +251,9 @@ export default function RegisterPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 text-gray-900 outline-none transition-all focus:border-[#8B1D2D]/50 focus:ring-4 focus:ring-[#8B1D2D]/5"
                             />
+                            <small className="text-muted text-gray-400">
+                                Allowed domains: gmail.com, wpu.ac.pg
+                            </small>
                         </div>
 
                         <div>
@@ -238,6 +330,31 @@ export default function RegisterPage() {
                             Create Account
                         </button>
 
+                        <div className="relative my-6">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-200"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="bg-white px-2 text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center">
+                            <button
+                                type="button"
+                                onClick={handleGoogleRegisterClick}
+                                className="flex items-center justify-center gap-2.5 rounded-full border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 active:scale-[0.98] shadow-sm cursor-pointer"
+                            >
+                                <svg className="h-4 w-4" viewBox="0 0 48 48">
+                                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                                </svg>
+                                Sign in with Google
+                            </button>
+                        </div>
+
                         <p className="mt-8 text-center text-sm text-gray-500">
                             Already have an account?{" "}
                             <Link href="/login" className="font-semibold text-gray-900 hover:underline">
@@ -252,5 +369,13 @@ export default function RegisterPage() {
                 </div>
             </div>
         </main>
+    );
+};
+
+export default function RegisterPage() {
+    return (
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+            <RegisterContent />
+        </GoogleOAuthProvider>
     );
 }
