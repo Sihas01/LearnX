@@ -23,6 +23,19 @@ function VerifyNowContent() {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@(gmail\.com|ac\.pg)$/;
+
+        if (!emailRegex.test(email)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please enter a valid email address (gmail.com or wpu.ac.pg only)',
+                confirmButtonColor: '#8B1D2D'
+            });
+            return;
+        }
+
+
         setLoading(true);
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/resend-verification`, {
