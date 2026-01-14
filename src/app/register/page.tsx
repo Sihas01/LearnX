@@ -137,9 +137,9 @@ const RegisterContent = () => {
                     });
                 } else {
                     Swal.fire({
-                        icon: 'info',
-                        title: 'Account Already Exists',
-                        text: `Welcome back, ${data.user.firstName}! An account with this email already exists. We've linked it to your Google account and are redirecting you to sign in.`,
+                        icon: 'success',
+                        title: 'Login Successful',
+                        text: `Welcome back, ${data.user.firstName}!`,
                         confirmButtonColor: '#8B1D2D'
                     }).then(() => {
                         router.push("/login");
@@ -148,8 +148,8 @@ const RegisterContent = () => {
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Google Login Failed',
-                    text: data.detail || "Google login failed",
+                    title: 'Google Registration Failed',
+                    text: data.detail || "Google registration failed",
                     confirmButtonColor: '#8B1D2D'
                 });
             }
@@ -171,7 +171,7 @@ const RegisterContent = () => {
         onError: () => {
             Swal.fire({
                 icon: 'error',
-                title: 'Google Login Error',
+                title: 'Google Registration Error',
                 text: 'An error occurred during Google authentication',
                 confirmButtonColor: '#8B1D2D'
             });
